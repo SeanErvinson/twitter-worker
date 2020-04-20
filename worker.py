@@ -4,7 +4,7 @@ import json
 from celery.schedules import crontab
 from celery import Celery
 import redis
-from twitter_worker.fetch import query_tweets, retrieve_status_tweets
+from fetch import query_tweets, retrieve_status_tweets
 
 REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379/1")
 BEARER_TOKEN = os.getenv("BEARER_TOKEN", None)
