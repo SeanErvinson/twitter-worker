@@ -7,6 +7,11 @@ import redis
 from fetch import query_tweets, retrieve_status_tweets
 
 DEBUG = bool(int(os.getenv("DEBUG", 0)))
+DB_HOST = os.environ.get("DB_HOST", "localhost")
+DB_PORT = os.environ.get("DB_PORT", 6379)
+DB_NUMBER = os.environ.get("DB_NUMBER", 1)
+DB_PASSWORD = os.environ.get("DB_PASSWORD", "")
+
 REDIS_URL = (
     f"redis://{DB_HOST}:{DB_PORT}/{DB_NUMBER}"
     if DEBUG
