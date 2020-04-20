@@ -6,12 +6,19 @@ from celery import Celery
 import redis
 from fetch import query_tweets, retrieve_status_tweets
 
-REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379/1")
+DEBUG = bool(int(os.getenv("DEBUG", 0)))
+REDIS_URL = (
+    f"redis://{DB_HOST}:{DB_PORT}/{DB_NUMBER}"
+    if DEBUG
+    else f"redis://:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NUMBER}"
+)
 BEARER_TOKEN = os.getenv("BEARER_TOKEN", None)
 USERNAME = os.getenv("USERNAME", "ASean___")
 
 redis_db = redis.from_url(REDIS_URL)
 celery = Celery(__name__,broker=REDIS_URL)
+celery.conf.broker_url = REDIS_URL
+celery.conf.result_backend = REDIS_URL
 
 @celery.on_after_configure.connect
 def setup_periodic_tasks(sender, **kwargs):
